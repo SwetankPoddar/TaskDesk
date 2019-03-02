@@ -1,0 +1,22 @@
+.login {
+  padding: 10 10 10 10;
+  margin-top: 5%;
+}
+
+.login .title {
+  margin-bottom: 5%;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+
+.welcome-message {
+  margin-top: 10%;
+}
