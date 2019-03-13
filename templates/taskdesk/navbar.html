@@ -1,0 +1,19 @@
+<nav class="navbar navbar-light bg-light">
+  <span class="navbar-text">
+    <h2>TaskDesk</h2>
+  </span>
+  <span class="text-right">
+    <div class="dropdown show">
+  <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <img src='/media/profile-images/default.png' class="img-fluid">
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'createCategory' %}"><i class="fas fa-plus"></i> Create Category</a>
+    <a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Settings</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+</div>
+  <span>
+</nav>
+<hr>

@@ -1,0 +1,44 @@
+{% extends 'taskdesk/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Tasks
+{% endblock %}
+{% block body_block %}
+{% include  'taskdesk/navbar.html' %}
+<div class="motivational-quote">Hello, <span class='username'>{{ user.first_name }}</span>. Dream it, achieve it!</div>
+
+  {% if tasks %}
+    {% for task in tasks %}
+    <div class="task {% cycle 'slide-left' 'slide-right' %}" style='background-color:#{{ task.priority_level }};'>
+       <div class="task-container">
+
+         <div class='title'><a href="{% url 'deleteTask' task.id %}" class="fas fa-trash delete"></a>{{ task.task_name|title  }} <a href="{% url 'markAsDoneTask' task.id %}" class="fas fa-check mark-as-done"></a></div>
+         {% if task.task_description %}
+            <p class='description'>{{ task.task_description|title  }}</p>
+         {% endif %}
+         {% if task.personal_due_date %}
+         <div class="date {% if task.personal_due_date_in_days <= 0 %} blur-text
+         {% endif %}">
+              Personal due date: {{task.personal_due_date}} ({{task.personal_due_date_message}})
+        </div>
+            <br>
+        {% endif %}
+            <div class="date {% if task.due_date_in_days <= 0 %} blur-text
+            {% endif %}">
+
+              Due date: {{task.due_date}} ({{task.due_date_message}})</div>
+            <div class="category"> Category: {{task.category}} </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+  <div class="task" style='background-color:#{{ task.priority_level }};'>
+     <div class="task-container"> Nothing upcoming!
+       <hr>
+       <img src='{% static "images/dancing.gif" %}' class ="img-fluid">
+     </div>
+  </div>
+  {% endif %}
+<a class="fixedbutton" href="{% url 'createTask'%}"><i class="fas fa-plus"></i><br>Create Task</a>
+{% endblock %}

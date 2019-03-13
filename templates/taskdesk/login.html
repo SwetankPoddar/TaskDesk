@@ -1,20 +1,21 @@
 {% extends 'taskdesk/base.html' %}
 {% load staticfiles %}
 {% block title_block %}
-Login
+TaskDesk - Login
 {% endblock %}
 {% block body_block %}
   <div class="login text-center">
     <h2 class="title">TaskDesk</h2>
     <form class="login_form" action="{% url 'login' %}" method="post">
+      {% csrf_token %}
       <div class="form-group">
         <label>Email</label>
         <input type="email" class="form-control" name="email" required>
       </div>
-
+      {% csrf_token %}
       <div class="form-group col-offset-2">
         <label>Password</label>
-        <input type="password" class="form-control" name="pass" required>
+        <input type="password" class="form-control" name="password" required>
       </div>
        <input class="btn btn-success" type="submit" name="submit" value="Go!">
        <a href="#register" class="btn btn-link" role="button">Register</a>
@@ -22,8 +23,8 @@ Login
 
     <hr>
     <div class="row">
-    <div class="col-6">Login with Facebook</div>
-    <div class="col-6">Login with Google</div>
+    <div class="col-6"><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a></div>
+    <div class="col-6"><a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a></div>
     </div>
 
     <div class="welcome-message">

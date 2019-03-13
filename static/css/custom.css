@@ -8,15 +8,103 @@
 }
 
 .footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  display: inline-block;
   padding: 1rem;
   background-color: #efefef;
   text-align: center;
 }
 
+.fixedbutton {
+    position: fixed;
+    bottom: 20%;
+    right: 15%;
+    border-style:solid;
+    text-align:center;
+    border-width:6%;
+    padding: 10px;
+    border-color:#000000;
+    background-color: #FFFFFF;
+    border-radius:50%
+}
+.fixedbutton > a:hover {
+   text-decoration: underline;
+}
+
+
+
+.task {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2px;
+
+  margin-top:2%;
+  margin-bottom: 2%;
+
+  border-radius: 4px;
+  width: 70%;
+}
+.task-container {
+  border-style:solid;
+  border-width:1px;
+  border-color:#AAAAAA;
+  border-radius:6px;
+  margin: 1%;
+  box-shadow: 0px 0px 5px #AAAAAA;
+  padding:10px;
+  background-color:#fff;
+  text-align: center;
+}
+
+.task-container > .title {
+  text-align: center;
+
+}
+.blur-text {
+  opacity: 0.5;
+}
+
+
+.task-container > .date {
+  text-align: left;
+  float:left;
+}
+
+.task-container > .title >.mark-as-done {
+  float:right;
+  text-align: right;
+}
+
+
+.task-container > .title >.delete{
+  float:left;
+  text-align: left;
+}
+
+.task-container > .category {
+  text-align: right;
+  float: right;
+}
+
+@media (max-width: 768px) {
+    .task-container > .date {
+        text-align: center;
+        float: none;
+    }
+    .task-container > .category {
+      text-align: center;
+      float: none;
+      margin-top: 5px;
+    }
+}
+
 .welcome-message {
   margin-top: 10%;
+}
+
+.motivational-quote {
+  text-align: center;
+}
+
+.motivational-quote > .username {
+  text-decoration: underline;
 }

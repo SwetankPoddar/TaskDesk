@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'taskdesk',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -106,6 +109,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Authentication backends for social auth
+AUTHENTICATION_BACKENDS = (
+ 'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+ 'social_core.backends.google.GoogleOpenId',  # for Google authentication
+ 'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+ 'social_core.backends.github.GithubOAuth2',  # for Github authentication
+ 'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
+
+ 'django.contrib.auth.backends.ModelBackend',
+)
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -121,6 +135,12 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Login URL
+LOGIN_REDIRECT_URL = 'tasks'
+
+# Logout URL
+LOGOUT_REDIRECT_URL = 'login'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
@@ -129,3 +149,12 @@ STATIC_URL = '/static/'
 #Media Files (dynamic file uploading)
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+#Keys for social media login
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='386236177011-8s0nc521qqrqf79dnii0k6t13juj22gq.apps.googleusercontent.com'  #Paste CLient Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '5W3IaiM-kK-ObCnbud7yyHnG' #Paste Secret Key
+
+
+# Facebook ask for Email
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']

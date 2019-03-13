@@ -1,0 +1,17 @@
+{% extends 'taskdesk/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Create Task
+{% endblock %}
+{% block body_block %}
+<form id="page_form" method="post" action="{% url 'createTask'%}">
+   {% csrf_token %}
+   {% for field in form.visible_fields %}
+       {{ field.errors }}
+       {{ field.help_text }}
+       {{ field }}
+   {% endfor %}
+   <input type="submit" name="submit" value="Create Task" />
+</form>
+
+{% endblock %}
