@@ -5,7 +5,6 @@ TaskDesk - Login
 {% endblock %}
 {% block body_block %}
   <div class="login text-center">
-    <h2 class="title">TaskDesk</h2>
     <form class="login_form" action="{% url 'login' %}" method="post">
       {% csrf_token %}
       <div class="form-group">

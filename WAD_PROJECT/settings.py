@@ -136,10 +136,10 @@ USE_TZ = True
 
 
 # Login URL
-LOGIN_REDIRECT_URL = 'tasks'
+LOGIN_REDIRECT_URL = '/tasks/'
 
 # Logout URL
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

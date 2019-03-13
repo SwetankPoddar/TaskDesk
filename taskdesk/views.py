@@ -38,9 +38,16 @@ def about_us(request):
 def differenceInDaysFromToday(date):
     return int((date - datetime.today().date()).days)
 
+@login_required
 def deleteTask(request,task_id):
     Task.objects.filter(user=request.user, id=task_id).delete()
     return redirect(reverse('view_tasks'))
+
+@login_required
+def deleteCategory(request,category_id):
+    Category.objects.filter(user=request.user, id=category_id).delete()
+    return redirect(reverse('view_categories'))
+
 
 def markAsDoneTask(request,task_id):
     task = Task.objects.get(user=request.user, id=task_id)
@@ -48,8 +55,15 @@ def markAsDoneTask(request,task_id):
     task.save()
     return redirect(reverse('view_tasks'))
 
+def markAsNotDone(request,task_id):
+    task = Task.objects.get(user=request.user, id=task_id)
+    task.done = False
+    task.save()
+    return redirect(reverse('view_tasks'))
+
+@login_required
 def view_tasks(request):
-    tasks = Task.objects.filter(user = request.user, done = False).order_by('personal_due_date','due_date')
+    tasks = Task.objects.filter(user = request.user, done = False).order_by('personal_due_date','due_date','priority_level')
     Profile,created= UserProfile.objects.get_or_create(user = request.user)
 
     for task in tasks:
@@ -107,11 +121,44 @@ def createTask(request):
     return render(request,'taskdesk/create_task.html',context_dict)
 
 @login_required
+def editTask(request,task_id):
+    instance = Task.objects.filter(user = request.user, id = task_id).first()
+    if instance == None:
+        return HttpResponseRedirect(reverse('view_tasks'))
+
+    form = createTaskForm(request, request.POST or None, instance=instance)
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('view_tasks'))
+
+    return render(request, 'taskdesk/create_task.html', {'form': form,'edit':True,'task':instance})
+@login_required
+def view_categories(request):
+    categories = Category.objects.filter(user = request.user)
+    return render(request, 'taskdesk/view_categories.html',{'categories':categories})
+
+@login_required
+def editCategory(request,category_id):
+    instance = Category.objects.filter(user = request.user, id = category_id).first()
+    if instance == None:
+        return HttpResponseRedirect(reverse('view_tasks'))
+
+    form = createCategoryForm(request.POST or None, instance=instance)
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('view_tasks'))
+
+    return render(request, 'taskdesk/create_category.html', {'form': form,'edit':True,'category':instance})
+
+
+@login_required
 def createCategory(request):
     category = createCategoryForm()
 
     if request.method == "POST":
-        category = createCategoryForm(request.POST,request.FILES)
+        category = createCategoryForm(request.POST)
 
         if category.is_valid():
             category = category.save(commit = False)

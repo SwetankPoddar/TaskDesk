@@ -19,15 +19,16 @@
     <link href='{% static "css/custom.css" %}' rel="stylesheet">
   </head>
   <body>
+
     <div class="container">
+        {% include  'taskdesk/navbar.html' %}
       <div class="col-12">
       {% block body_block %}
       {% endblock %}
       </div>
+      <div class="push"></div>
     </div>
-  </body>
-
-  <footer class="fixed-bottom footer">
+  <footer class="footer container">
     <div class="row">
     <div class="col-6">
       <a href=""  class="btn btn-link" role="button"> FAQs </a>
@@ -37,4 +38,6 @@
     </div>
     </div>
   </footer>
+
+</body>
 </html>

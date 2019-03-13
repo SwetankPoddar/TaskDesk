@@ -1,0 +1,18 @@
+{% extends 'taskdesk/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Categories
+{% endblock %}
+{% block body_block %}
+<p class="alert alert-danger"> Deleting a category will result in deletion of all tasks that belong to it. </p>
+<table class="table">
+<tr> <th> Category Name <br> Description </th> <th> Edit </th> <th>Delete</th></tr>
+  {% for category in categories %}
+  <tr>
+    <td>{{ category.category_name }} <br> {{ category.category_description }}</td>
+    <td><a class="far fa-edit" href="{% url 'editCategory' category.id %}"> </a> </td>
+    <td><a class="fas fa-trash delete" href="{% url 'deleteCategory' category.id %}"></a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

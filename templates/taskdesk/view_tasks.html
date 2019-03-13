@@ -4,15 +4,14 @@
 Tasks
 {% endblock %}
 {% block body_block %}
-{% include  'taskdesk/navbar.html' %}
-<div class="motivational-quote">Hello, <span class='username'>{{ user.first_name }}</span>. Dream it, achieve it!</div>
+<div class="motivational-quote">Hello, <span class='username'>{{ user.first_name }} {{ user.last_name }}</span>. Dream it, Plan it, Achieve it!</div>
 
   {% if tasks %}
     {% for task in tasks %}
     <div class="task {% cycle 'slide-left' 'slide-right' %}" style='background-color:#{{ task.priority_level }};'>
        <div class="task-container">
 
-         <div class='title'><a href="{% url 'deleteTask' task.id %}" class="fas fa-trash delete"></a>{{ task.task_name|title  }} <a href="{% url 'markAsDoneTask' task.id %}" class="fas fa-check mark-as-done"></a></div>
+         <div class='title'><a href="{% url 'deleteTask' task.id %}" class="fas fa-trash delete"></a>  {{ task.task_name|title  }}  <a class="far fa-edit" href="{% url 'editTask' task.id %}"></a> <a href="{% url 'markAsDoneTask' task.id %}" class="fas fa-check mark-as-done"></a></div>
          {% if task.task_description %}
             <p class='description'>{{ task.task_description|title  }}</p>
          {% endif %}

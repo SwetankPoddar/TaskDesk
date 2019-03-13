@@ -17,21 +17,21 @@ class createTaskForm(forms.ModelForm):
             'personal_due_date':DateInput(),
             'due_date':DateInput()
         }
-        labels = {
-            'personal_due_date': 'Please enter the due date',
-        }
 
     def clean(self):
         data = self.cleaned_data
         personal_due_date = data.get('personal_due_date')
         due_date = data.get('due_date')
 
-        if(personal_due_date > due_date):
-            self.add_error('personal_due_date','Personal due date should be before the due date of task.')
-
         todays_date = datetime.today().date()
-        if((personal_due_date - todays_date).days <= 0 or (due_date - todays_date).days <= 0):
-            self.add_error('due_date','Both the due dates should be in future.')
+        if (due_date - todays_date).days <= 0:
+            self.add_error('due_date','Due date should be in future.')
+
+        if(personal_due_date):
+            if (personal_due_date - todays_date).days <= 0:
+                self.add_error('personal_due_date','Personal due date should be in future.')
+            if(personal_due_date > due_date):
+                self.add_error('personal_due_date','Personal due date should be before the due date of task.')
 
 
     def __init__(self, request, *args, **kwargs):
@@ -41,10 +41,17 @@ class createTaskForm(forms.ModelForm):
                 queryset = Category.objects.filter(user = request.user)
             except DoesNotExist:
                 queryset = Category.objects.none()
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
         self.fields['category'].queryset = queryset
 
 class createCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ('category_name','category_description','category_image')
+        fields = ('category_name','category_description')
+
+    def __init__(self, *args, **kwargs):
+        super(createCategoryForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

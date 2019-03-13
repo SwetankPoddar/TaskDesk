@@ -4,14 +4,38 @@
 Create Task
 {% endblock %}
 {% block body_block %}
-<form id="page_form" method="post" action="{% url 'createTask'%}">
+
+<form id="page_form" method="post" action="{% if edit %}{% url 'editTask' task.id %}{% else %}{% url 'createTask'%}{% endif %}">
    {% csrf_token %}
-   {% for field in form.visible_fields %}
-       {{ field.errors }}
-       {{ field.help_text }}
-       {{ field }}
+   {% for field in form %}
+     <label>{{ field.label }}</label>
+     {{ field }}
+       {% for error in field.errors %}
+           <div class="alert alert-danger">
+               <strong>{{ error|escape }}</strong>
+           </div>
+       {% endfor %}
+       <br>
    {% endfor %}
-   <input type="submit" name="submit" value="Create Task" />
+   {% for error in form.non_field_errors %}
+       <div class="alert alert-danger">
+           <strong>{{ error|escape }}</strong>
+       </div>
+   {% endfor %}
+    {% if edit %}
+      {% if task.done %}
+        <a href="{% url 'markAsNotDone' task.id %}"> Mark as undone </a>
+      {% else %}
+        <a href="{% url 'markAsDoneTask' task.id %}"> Mark as done </a>
+      {% endif %}
+    {% endif %}
+   <div class="text-center">
+     {% if edit %}
+     <input type="submit" class="btn btn-success" name="submit" value="Update" />
+     {% else %}
+     <input type="submit" class="btn btn-success" name="submit" value="Create Task" />
+     {% endif %}
+   </div>
 </form>
 
 {% endblock %}

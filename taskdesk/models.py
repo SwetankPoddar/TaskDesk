@@ -18,7 +18,6 @@ class Category(models.Model):
     user = models.ForeignKey(User)
     category_name = models.CharField(max_length = 45, blank=False)
     category_description = models.CharField(max_length = 250, blank = True)
-    category_image = models.ImageField(upload_to='category-images/', blank=True)
     created_at = models.DateTimeField(editable = False)
 
 
