@@ -3,12 +3,17 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from forms import createTaskForm, createCategoryForm
+from forms import createTaskForm, createCategoryForm, createSettingsForm, createUserSettingsForm,PasswordChangeCustomForm,SetPasswordCustomForm
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from models import Category,Task,UserProfile
+from django.contrib import messages
 
 def user_login(request):
+
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('view_tasks'))
+
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -65,6 +70,8 @@ def markAsNotDone(request,task_id):
 def view_tasks(request):
     tasks = Task.objects.filter(user = request.user, done = False).order_by('personal_due_date','due_date','priority_level')
     Profile,created= UserProfile.objects.get_or_create(user = request.user)
+    if request.GET.get('cateogory'):
+        tasks.filter(category=request.GET.get('cateogory'))
 
     for task in tasks:
 
@@ -142,16 +149,15 @@ def view_categories(request):
 def editCategory(request,category_id):
     instance = Category.objects.filter(user = request.user, id = category_id).first()
     if instance == None:
-        return HttpResponseRedirect(reverse('view_tasks'))
+        return HttpResponseRedirect(reverse('view_categories'))
 
     form = createCategoryForm(request.POST or None, instance=instance)
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('view_tasks'))
+        return HttpResponseRedirect(reverse('view_categories'))
 
     return render(request, 'taskdesk/create_category.html', {'form': form,'edit':True,'category':instance})
-
 
 @login_required
 def createCategory(request):
@@ -164,13 +170,54 @@ def createCategory(request):
             category = category.save(commit = False)
             category.user = request.user
             category.save()
-            return HttpResponse("Added")
+            return HttpResponseRedirect(reverse('view_categories'))
         else:
             print(category.errors)
 
     context_dict = {'form':category}
 
     return render(request,'taskdesk/create_category.html',context_dict)
+
+@login_required
+def userPersonalizeSettings(request):
+    instance = UserProfile.objects.filter(user = request.user).first()
+
+    form = createSettingsForm(request.POST or None, instance=instance)
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('userSettings'))
+
+    return render(request, 'taskdesk/settings.html', {'form':form})
+
+
+@login_required
+def userAccountSettings(request):
+    instance = request.user
+
+    form = createUserSettingsForm(request.POST or None, instance=instance)
+
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(reverse('userSettings'))
+
+    return render(request, 'taskdesk/settings.html', {'form':form,'accountSettings':True})
+
+@login_required
+def userChangePassword(request):
+    if request.method == 'POST':
+        form = PasswordChangeCustomForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('userChangePassword')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeCustomForm(request.user)
+    return render(request, 'taskdesk/settings.html', {
+        'form': form,'changePasword':True
+    })
 
 def redirectToLogin(request):
     return redirect('login/')

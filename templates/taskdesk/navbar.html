@@ -1,16 +1,22 @@
 <nav class="navbar navbar-light bg-light">
-  <span class="navbar-text">
+  <span class="navbar-brand">
     <a href="{% url 'view_tasks' %}"><h2><i class="fas fa-tasks"></i> TaskDesk</h2></a>
   </span>
   {% if user.is_authenticated %}
   <span class="text-right">
     <div class="dropdown show">
   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <img src='/media/profile-images/default.png' class="img-fluid">
+  <i class="fas fa-user"></i>
   </a>
   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'createTask' %}"><i class="fas fa-plus"></i> Create Task</a>
+    <a class="dropdown-item" href="{% url 'view_categories' %}"><i class="fas fa-pencil-alt"></i> Manage Tasks</a>
+    <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="{% url 'createCategory' %}"><i class="fas fa-plus"></i> Create Category</a>
-    <a class="dropdown-item" href="#"><i class="fas fa-cogs"></i> Settings</a>
+    <a class="dropdown-item" href="{% url 'view_categories' %}"><i class="fas fa-pencil-alt"></i> Manage Categories</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="{% url 'userPersonalizeSettings' %}"><i class="fas fa-cogs"></i> Personalize</a>
+    <a class="dropdown-item" href="{% url 'userAccountSettings' %}"><i class="fas fa-cogs"></i> Settings</a>
     <div class="dropdown-divider"></div>
     <a class="dropdown-item" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
@@ -18,4 +24,3 @@
   <span>
     {% endif %}
 </nav>
-<hr>

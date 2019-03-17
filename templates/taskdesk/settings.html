@@ -1,0 +1,39 @@
+{% extends 'taskdesk/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Settings
+{% endblock %}
+{% block body_block %}
+<form id="user_settings" enctype="multipart/form-data" method="post" action="
+{% if changePasword  %}
+{% url 'userChangePassword' %}
+{% elif accountSettings %}
+{% url 'userAccountSettings' %}
+{% else %}
+{% url 'userPersonalizeSettings' %}
+{% endif %}">
+  {% csrf_token %}
+  {% for field in form %}
+    <label>{{ field.label }}</label>
+    {{ field }}
+      {% for error in field.errors %}
+          <div class="alert alert-danger">
+              <strong>{{ error|escape }}</strong>
+          </div>
+      {% endfor %}
+      <br>
+  {% endfor %}
+  {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+      </div>
+  {% endfor %}
+  {% if accountSettings  %}
+    <a href="{% url 'userChangePassword' %}"> Change Password </a>
+  {% endif %}
+  <div class="text-center">
+    <input type="submit" class="btn btn-success" name="submit" value="Update" />
+  </div>
+</form>
+
+{% endblock %}

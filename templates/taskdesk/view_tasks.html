@@ -4,13 +4,12 @@
 Tasks
 {% endblock %}
 {% block body_block %}
-<div class="motivational-quote">Hello, <span class='username'>{{ user.first_name }} {{ user.last_name }}</span>. Dream it, Plan it, Achieve it!</div>
+<div class="motivational-quote">Hello,{{user.url_image}} <span class='username'>{{ user.first_name }} {{ user.last_name }}</span>. Dream it, Plan it, Achieve it!</div>
 
   {% if tasks %}
     {% for task in tasks %}
-    <div class="task {% cycle 'slide-left' 'slide-right' %}" style='background-color:#{{ task.priority_level }};'>
+    <div class="task {% cycle 'slide-left' 'slide-right' %}" style='background-color:{{ task.priority_level }};'>
        <div class="task-container">
-
          <div class='title'><a href="{% url 'deleteTask' task.id %}" class="fas fa-trash delete"></a>  {{ task.task_name|title  }}  <a class="far fa-edit" href="{% url 'editTask' task.id %}"></a> <a href="{% url 'markAsDoneTask' task.id %}" class="fas fa-check mark-as-done"></a></div>
          {% if task.task_description %}
             <p class='description'>{{ task.task_description|title  }}</p>
@@ -27,12 +26,13 @@ Tasks
 
               Due date: {{task.due_date}} ({{task.due_date_message}})</div>
             <div class="category"> Category: {{task.category}} </div>
-        <div class="clearfix"></div>
+
       </div>
     </div>
+        <div class="clearfix"></div>
     {% endfor %}
   {% else %}
-  <div class="task" style='background-color:#{{ task.priority_level }};'>
+  <div class="task slide-left">
      <div class="task-container"> Nothing upcoming!
        <hr>
        <img src='{% static "images/dancing.gif" %}' class ="img-fluid">
@@ -40,4 +40,18 @@ Tasks
   </div>
   {% endif %}
 <a class="fixedbutton" href="{% url 'createTask'%}"><i class="fas fa-plus"></i><br>Create Task</a>
+{% endblock %}
+{% block script_block %}
+<script>
+  $(document).ready(function() {
+  $(".slide-left").animate({
+    opacity: 1,
+     "left": "+=15%"
+   }, 2000 );
+  $(".slide-right").animate({
+    opacity: 1,
+    "right": "+=15%" }
+    , 2000 );
+});
+</script>
 {% endblock %}

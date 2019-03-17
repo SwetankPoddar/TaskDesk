@@ -5,10 +5,9 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    profile_image = models.ImageField(upload_to='profile-images/',default = 'profile-images/default.png', blank=True)
-    high_priority_color = models.CharField(max_length=6,default='FF0000')
-    medium_priority_color = models.CharField(max_length=6,default='FFA500')
-    low_priority_color = models.CharField(max_length=6,default='00FF00')
+    high_priority_color = models.CharField(max_length=7,default='#FF0000')
+    medium_priority_color = models.CharField(max_length=7,default='#FFA500')
+    low_priority_color = models.CharField(max_length=7,default='#00FF00')
     color_mode = models.CharField(max_length=1,default='D')
 
     def __str__(self):

@@ -7,11 +7,26 @@
   margin-bottom: 5%;
 }
 
+.navbar {
+  margin-bottom: 2%;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.navbar-brand > a {
+  color:black;
+  text-decoration: none;
+}
+
 .footer,
 .push {
   height: 50px;
 }
 footer {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  position: fixed;
+  width: 100%;
   bottom: 0;
   background: #f8f9fa;
   line-height: 50px;
@@ -19,10 +34,17 @@ footer {
   text-align: center;
 }
 
+.slide-left {
+  float: left;
+}
+.slide-right {
+  float: right;
+}
+
 .fixedbutton {
     position: fixed;
     bottom: 20%;
-    right: 15%;
+    right: 10%;
     border-style:solid;
     text-align:center;
     border-width:6%;
@@ -31,31 +53,25 @@ footer {
     background-color: #FFFFFF;
     border-radius:50%
 }
-.fixedbutton > a:hover {
-   text-decoration: underline;
-}
-
-
-
 .task {
-  margin-left: auto;
-  margin-right: auto;
+  position: relative;
   padding: 2px;
-
+  opacity: 0.2;
   margin-top:2%;
   margin-bottom: 2%;
-
   border-radius: 4px;
   width: 70%;
 }
 .task-container {
   border-style:solid;
   border-width:1px;
-  border-color:#AAAAAA;
+  border-color:#000000;
   border-radius:6px;
   margin: 1%;
-  box-shadow: 0px 0px 5px #AAAAAA;
-  padding:10px;
+  padding-top: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 4%;
   background-color:#fff;
   text-align: center;
 }
