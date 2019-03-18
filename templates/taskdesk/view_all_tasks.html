@@ -1,0 +1,23 @@
+{% extends 'taskdesk/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Manage Tasks
+{% endblock %}
+{% block body_block %}
+<table class="table">
+<tr> <th> Task Name <br> Description </th> <th> Edit </th> <th>Delete</th></tr>
+{% if tasks|length == 0 %}
+<tr>
+<td colspan="3"><p class="alert alert-success text-center">Create a new task to get started!</p></td>
+</tr>
+{% else %}
+  {% for task in tasks %}
+  <tr {% if task.done %}class='alert alert-success'{% endif %}>
+    <td>{{ task.task_name }} <br> {{ task.task_description }}</td>
+    <td><a class="far fa-edit" href="{% url 'editTask' task.id %}"> </a> </td>
+    <td><a class="fas fa-trash delete" href="{% url 'deleteTask' task.id %}"></a></td>
+  </tr>
+  {% endfor %}
+{% endif %}
+</table>
+{% endblock %}

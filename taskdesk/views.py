@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout,update_session_auth_hash
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from forms import createTaskForm, createCategoryForm, createSettingsForm, createUserSettingsForm,PasswordChangeCustomForm,SetPasswordCustomForm
+from forms import createTaskForm, createCategoryForm, createSettingsForm, createUserSettingsForm,PasswordChangeCustomForm,UserCreationCustomForm
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from models import Category,Task,UserProfile
@@ -21,7 +21,7 @@ def user_login(request):
         try:
             username = User.objects.get(email = email)
         except User.DoesNotExist:
-            return HttpResponse("Invalid login details supplied.")
+            return render(request,'taskdesk/login.html',{'error': "Invalid login details"})
 
         user = authenticate(username = username, password = password)
 
@@ -30,10 +30,9 @@ def user_login(request):
                 login(request,user)
                 return HttpResponseRedirect(reverse('view_tasks'))
             else:
-                return HttpResponse("Your TaskDesk account is disabled.")
+                return render(request,'taskdesk/login.html',{'error': "Your TaskDesk account is disabled"})
         else:
-            print("Invalid login details: {0},{1}".format(email,password))
-            return HttpResponse("Invalid login details supplied.")
+            return render(request,'taskdesk/login.html',{'error': "Invalid login details"})
     else:
         return render(request,'taskdesk/login.html',{})
 
@@ -108,6 +107,13 @@ def view_tasks(request):
             task.priority_level = Profile.low_priority_color
 
     return render(request,'taskdesk/view_tasks.html', {'tasks':tasks})
+
+@login_required
+
+def manageTasks(request):
+    tasks = Task.objects.filter(user = request.user)
+    return render(request, 'taskdesk/view_all_tasks.html',{'tasks':tasks})
+
 @login_required
 def createTask(request):
 
@@ -186,7 +192,7 @@ def userPersonalizeSettings(request):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('userSettings'))
+        return HttpResponseRedirect(reverse('userPersonalizeSettings'))
 
     return render(request, 'taskdesk/settings.html', {'form':form})
 
@@ -199,25 +205,50 @@ def userAccountSettings(request):
 
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse('userSettings'))
+        return HttpResponseRedirect(reverse('userAccountSettings'))
 
     return render(request, 'taskdesk/settings.html', {'form':form,'accountSettings':True})
 
 @login_required
 def userChangePassword(request):
+
     if request.method == 'POST':
         form = PasswordChangeCustomForm(request.user, request.POST)
+
         if form.is_valid():
             user = form.save()
+            update_session_auth_hash(request, form.user)
             messages.success(request, 'Your password was successfully updated!')
             return redirect('userChangePassword')
         else:
             messages.error(request, 'Please correct the error below.')
     else:
+
         form = PasswordChangeCustomForm(request.user)
+
     return render(request, 'taskdesk/settings.html', {
         'form': form,'changePasword':True
     })
+@login_required
+def userDeleteAccount(request):
+    to_delete = request.user
+    to_delete.is_active = False
+    to_delete.save()
+    return redirect(reverse('login'))
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationCustomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationCustomForm()
+    return render(request, 'taskdesk/registration.html', {'form': form})
 
 def redirectToLogin(request):
     return redirect('login/')

@@ -5,6 +5,9 @@ Login
 {% endblock %}
 {% block body_block %}
   <div class="login text-center">
+ {% if error %}
+  <p class="alert alert-danger">{{ error }}</p>
+ {% endif %}
     <form class="login_form" action="{% url 'login' %}" method="post">
       {% csrf_token %}
       <div class="form-group">
@@ -17,7 +20,7 @@ Login
         <input type="password" class="form-control" name="password" required>
       </div>
        <input class="btn btn-success" type="submit" name="submit" value="Go!">
-       <a href="#register" class="btn btn-link" role="button">Register</a>
+       <a href="{% url 'register' %}" class="btn btn-link" role="button">Register</a>
     </form>
 
     <hr>

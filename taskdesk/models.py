@@ -3,6 +3,11 @@ from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 
+
+#MAKE email ID unqiue field as users will be logging in via social media accounts.
+
+User._meta.get_field('email')._unique = True
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     high_priority_color = models.CharField(max_length=7,default='#FF0000')

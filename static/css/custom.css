@@ -32,6 +32,7 @@ footer {
   line-height: 50px;
   padding: 0 20px;
   text-align: center;
+  margin-top: 1%;
 }
 
 .slide-left {
@@ -93,6 +94,12 @@ footer {
 .task-container > .title >.mark-as-done {
   float:right;
   text-align: right;
+}
+
+.accountDeleteLink {
+  color:red;
+  border:1px solid red;
+  padding:10px;
 }
 
 

@@ -3,7 +3,7 @@ from django.forms.widgets import TextInput
 from django.contrib.auth.models import User
 from models import Category, UserProfile, Task
 from datetime import datetime
-from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm,UserCreationForm
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -91,9 +91,16 @@ class PasswordChangeCustomForm(PasswordChangeForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-class SetPasswordCustomForm(SetPasswordForm):
+class UserCreationCustomForm(UserCreationForm):
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    email = forms.EmailField(max_length=60, help_text='Required. Inform a valid email address.')
 
-    def __init__(self, user, *args, **kwargs):
-        super(PasswordChangeCustomForm, self).__init__(user,*args, **kwargs)
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email','password1','password2')
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreationCustomForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'

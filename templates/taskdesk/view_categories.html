@@ -7,6 +7,11 @@ Categories
 <p class="alert alert-danger"> Deleting a category will result in deletion of all the tasks that belong to it. </p>
 <table class="table">
 <tr> <th> Category Name <br> Description </th> <th> Edit </th> <th>Delete</th></tr>
+{% if categories|length == 0 %}
+<tr>
+<td colspan="3"><p class="alert alert-success text-center">Create a new category to get started!</p></td>
+</tr>
+{% else %}
   {% for category in categories %}
   <tr>
     <td>{{ category.category_name }} <br> {{ category.category_description }}</td>
@@ -14,5 +19,6 @@ Categories
     <td><a class="fas fa-trash delete" href="{% url 'deleteCategory' category.id %}"></a></td>
   </tr>
   {% endfor %}
+  {% endif %}
 </table>
 {% endblock %}

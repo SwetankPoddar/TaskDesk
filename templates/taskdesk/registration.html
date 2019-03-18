@@ -1,17 +1,11 @@
 {% extends 'taskdesk/base.html' %}
 {% load staticfiles %}
 {% block title_block %}
-Settings
+Registration
 {% endblock %}
 {% block body_block %}
-<form id="user_settings" enctype="multipart/form-data" method="post" action="
-{% if changePasword  %}
-{% url 'userChangePassword' %}
-{% elif accountSettings %}
-{% url 'userAccountSettings' %}
-{% else %}
-{% url 'userPersonalizeSettings' %}
-{% endif %}">
+<center> <h2>Let's get your started!</h2></center>
+<form id="create_category" enctype="multipart/form-data" method="post" action="{% url 'register' %}">
   {% csrf_token %}
   {% for field in form %}
     <label>{{ field.label }}</label>
@@ -28,13 +22,8 @@ Settings
           <strong>{{ error|escape }}</strong>
       </div>
   {% endfor %}
-  {% if accountSettings  %}
-    <a href="{% url 'userChangePassword' %}"> Change Password </a>
-    <br><br>
-    <a class="accountDeleteLink" href="{% url 'userDeleteAccount' %}"> DELETE YOUR ACCOUNT </a>
-  {% endif %}
   <div class="text-center">
-    <input type="submit" class="btn btn-success" name="submit" value="Update" />
+    <input type="submit" class="btn btn-success" name="submit" value="Create new account" />
   </div>
 </form>
 
