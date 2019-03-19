@@ -5,12 +5,12 @@ Tasks
 {% endblock %}
 {% block body_block %}
 <div class="motivational-quote">Hello,{{user.url_image}} <span class='username'>{{ user.first_name }} {{ user.last_name }}</span>. Dream it, Plan it, Achieve it!</div>
-
+{% if categorySet %}<div class='text-center'><br>{% if category %} {{ category.category_name }} {% else %}<div class="alert alert-warning"> Invalid/Empty Category </div>{% endif %} </div> {% endif %}
   {% if tasks %}
     {% for task in tasks %}
     <div class="task {% cycle 'slide-left' 'slide-right' %}" style='background-color:{{ task.priority_level }};'>
        <div class="task-container">
-         <div class='title'><a href="{% url 'deleteTask' task.id %}" class="fas fa-trash delete"></a>  {{ task.task_name|title  }}  <a class="far fa-edit" href="{% url 'editTask' task.id %}"></a> <a href="{% url 'markAsDoneTask' task.id %}" class="fas fa-check mark-as-done"></a></div>
+         <div class='title'><a  href="{% url 'deleteTask' task.id %}" class="fas fa-trash delete"></a>  {{ task.task_name|title  }}  <a class="far fa-edit" href="{% url 'editTask' task.id %}"></a> <a href="{% url 'markAsDoneTask' task.id %}" class="fas fa-check mark-as-done"></a></div>
          {% if task.task_description %}
             <p class='description'>{{ task.task_description|title  }}</p>
          {% endif %}
@@ -25,7 +25,7 @@ Tasks
             {% endif %}">
 
               Due date: {{task.due_date}} ({{task.due_date_message}})</div>
-            <div class="category"> Category: {{task.category}} </div>
+            <div class="category"> Category: <a href='{% url 'view_tasks' task.category.id %}'>{{task.category}}</a> </div>
 
       </div>
     </div>
@@ -41,17 +41,30 @@ Tasks
   {% endif %}
 <a class="fixedbutton" href="{% url 'createTask'%}"><i class="fas fa-plus"></i><br>Create Task</a>
 {% endblock %}
+{% block addWalkThrough %}
+<button type='button'  class="btn btn-outline-success" id='addWalkThrough'>Start walk through</button>
+{% endblock %}
 {% block script_block %}
 <script>
   $(document).ready(function() {
   $(".slide-left").animate({
     opacity: 1,
      "left": "+=15%"
-   }, 2000 );
+   }, 1500 );
   $(".slide-right").animate({
     opacity: 1,
     "right": "+=15%" }
-    , 2000 );
+    , 1500 );
+
+});
+
+$("#addWalkThrough").click(function(){
+$('.dropdown-icon').attr('data-intro','his dropdown contains links for you to create/manage categories, personlize your account and much more!');
+$('.navbar-brand').attr('data-intro','Click here anytime to come to this page');
+$('.motivational-quote').attr('data-intro','TaskDesk will always greet you to keep you motivated');
+$('.fixedbutton').attr('data-intro','You can use this or the link for the dropdown to create new tasks');
+$('.task').first().attr('data-intro',"This is how tasks looks. The color around the task represents the priority level. The color can be changed from the dropdown menu! <br> <span class='fas fa-trash delete'></span> Click on this to delete the task<br> <span class='far fa-edit'></span> Click on this to edit the task<br><span class='fas fa-check'></span> Click on this mark this task as done<br>");
+introJs().start();
 });
 </script>
 {% endblock %}

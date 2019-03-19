@@ -1,9 +1,9 @@
 <nav class="navbar navbar-light bg-light">
   <span class="navbar-brand">
-    <a href="{% url 'view_tasks' %}"><h2><i class="fas fa-tasks"></i> TaskDesk</h2></a>
+    <a href="{% url 'view_tasks' %}" ><h2><i class="fas fa-tasks"></i>TaskDesk</h2></a>
   </span>
   {% if user.is_authenticated %}
-  <span class="text-right">
+  <span class="text-right dropdown-icon">
     <div class="dropdown show">
   <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   <i class="fas fa-user"></i>

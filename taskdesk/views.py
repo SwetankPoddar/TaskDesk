@@ -37,7 +37,7 @@ def user_login(request):
         return render(request,'taskdesk/login.html',{})
 
 def about_us(request):
-    return HttpsRe
+    return render (request, 'taskdesk/about-us.html')
 
 def differenceInDaysFromToday(date):
     return int((date - datetime.today().date()).days)
@@ -66,8 +66,15 @@ def markAsNotDone(request,task_id):
     return redirect(reverse('view_tasks'))
 
 @login_required
-def view_tasks(request):
+def view_tasks(request, category_id=''):
     tasks = Task.objects.filter(user = request.user, done = False).order_by('personal_due_date','due_date','priority_level')
+    category = None
+    categorySet = False
+    if(category_id!=''):
+        category = Category.objects.filter(user = request.user, id = category_id).first()
+        tasks = tasks.filter(category=category_id)
+        categorySet = True
+
     Profile,created= UserProfile.objects.get_or_create(user = request.user)
     if request.GET.get('cateogory'):
         tasks.filter(category=request.GET.get('cateogory'))
@@ -106,7 +113,7 @@ def view_tasks(request):
         elif task.priority_level == 3:
             task.priority_level = Profile.low_priority_color
 
-    return render(request,'taskdesk/view_tasks.html', {'tasks':tasks})
+    return render(request,'taskdesk/view_tasks.html', {'tasks':tasks,'category':category,'categorySet':categorySet})
 
 @login_required
 
@@ -146,6 +153,7 @@ def editTask(request,task_id):
         return HttpResponseRedirect(reverse('view_tasks'))
 
     return render(request, 'taskdesk/create_task.html', {'form': form,'edit':True,'task':instance})
+
 @login_required
 def view_categories(request):
     categories = Category.objects.filter(user = request.user)
@@ -232,8 +240,7 @@ def userChangePassword(request):
 @login_required
 def userDeleteAccount(request):
     to_delete = request.user
-    to_delete.is_active = False
-    to_delete.save()
+    to_delete.delete()
     return redirect(reverse('login'))
 
 def register(request):

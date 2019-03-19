@@ -48,16 +48,21 @@ footer {
     right: 10%;
     border-style:solid;
     text-align:center;
-    border-width:6%;
     padding: 10px;
-    border-color:#000000;
     background-color: #FFFFFF;
-    border-radius:50%
+    border-radius:50%;
+    text-decoration: none;
+
+}
+
+.fixedbutton:hover {
+  padding: 15px;
+  text-decoration: none;
 }
 .task {
   position: relative;
   padding: 2px;
-  opacity: 0.2;
+  opacity: 0;
   margin-top:2%;
   margin-bottom: 2%;
   border-radius: 4px;
