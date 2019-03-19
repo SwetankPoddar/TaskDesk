@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout,update_session_auth_
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from forms import createTaskForm, createCategoryForm, createSettingsForm, createUserSettingsForm,PasswordChangeCustomForm,UserCreationCustomForm
-from datetime import datetime
+from datetime import datetime,timedelta
 from django.contrib.auth.decorators import login_required
 from models import Category,Task,UserProfile
 from django.contrib import messages
@@ -76,6 +76,21 @@ def view_tasks(request, category_id=''):
         categorySet = True
 
     Profile,created= UserProfile.objects.get_or_create(user = request.user)
+
+    if created:
+        c = Category.objects.create(user = request.user, category_name ='Test category - 1', category_description ='Test category - 1 - description')
+        c2 = Category.objects.create(user = request.user, category_name ='Test category - 2')
+        twoDaysInfuture = (datetime.now() + timedelta(days=2))
+        twoDaysInPast = (datetime.now() + timedelta(days=-2))
+        tomorrow = (datetime.now() + timedelta(days=1))
+        Task.objects.create(user = request.user, category = c,task_name='Task Example 1',
+        task_description="Task Description example 1",due_date=tomorrow,
+        personal_due_date=twoDaysInPast,priority_level=3)
+        Task.objects.create(user = request.user,
+         category = c2,task_name='Task Example 2',
+         due_date =twoDaysInfuture,personal_due_date=datetime.now(),priority_level=1)
+
+
     if request.GET.get('cateogory'):
         tasks.filter(category=request.GET.get('cateogory'))
 
@@ -113,7 +128,7 @@ def view_tasks(request, category_id=''):
         elif task.priority_level == 3:
             task.priority_level = Profile.low_priority_color
 
-    return render(request,'taskdesk/view_tasks.html', {'tasks':tasks,'category':category,'categorySet':categorySet})
+    return render(request,'taskdesk/view_tasks.html', {'tasks':tasks,'category':category,'categorySet':categorySet,'created':created})
 
 @login_required
 

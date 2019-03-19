@@ -42,7 +42,7 @@ Tasks
 <a class="fixedbutton" href="{% url 'createTask'%}"><i class="fas fa-plus"></i><br>Create Task</a>
 {% endblock %}
 {% block addWalkThrough %}
-<button type='button'  class="btn btn-outline-success" id='addWalkThrough'>Start walk through</button>
+<button type='button' class="btn btn-outline-success" id='addWalkThrough'>Start walk through</button>
 {% endblock %}
 {% block script_block %}
 <script>
@@ -57,14 +57,19 @@ Tasks
     , 1500 );
 
 });
-
 $("#addWalkThrough").click(function(){
-$('.dropdown-icon').attr('data-intro','his dropdown contains links for you to create/manage categories, personlize your account and much more!');
+$('.dropdown-icon').attr('data-intro','This dropdown contains links for you to create/manage categories, personlize your account and much more!');
 $('.navbar-brand').attr('data-intro','Click here anytime to come to this page');
 $('.motivational-quote').attr('data-intro','TaskDesk will always greet you to keep you motivated');
 $('.fixedbutton').attr('data-intro','You can use this or the link for the dropdown to create new tasks');
 $('.task').first().attr('data-intro',"This is how tasks looks. The color around the task represents the priority level. The color can be changed from the dropdown menu! <br> <span class='fas fa-trash delete'></span> Click on this to delete the task<br> <span class='far fa-edit'></span> Click on this to edit the task<br><span class='fas fa-check'></span> Click on this mark this task as done<br>");
+$('#addWalkThrough').attr('data-intro','Click on this button to start this intro again!')
 introJs().start();
 });
+
+
+{% if created %}
+$('#addWalkThrough').trigger('click');
+{% endif %}
 </script>
 {% endblock %}
