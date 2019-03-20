@@ -7,7 +7,7 @@ Registration
 <center> <h2>Let's get your started!</h2></center>
 <form id="create_category" enctype="multipart/form-data" method="post" action="{% url 'register' %}">
   {% csrf_token %}
-  {% for field in form %}
+  {% for field in form.visible_fields %}
     <label>{{ field.label }}</label>
     {{ field }}
       {% for error in field.errors %}
@@ -23,6 +23,9 @@ Registration
       </div>
   {% endfor %}
   <div class="text-center">
+{% for field in form.hidden_fields %}
+{{ field }}
+{% endfor %}
     <input type="submit" class="btn btn-success" name="submit" value="Create new account" />
   </div>
 </form>

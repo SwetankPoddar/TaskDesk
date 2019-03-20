@@ -8,6 +8,8 @@ from datetime import datetime,timedelta
 from django.contrib.auth.decorators import login_required
 from models import Category,Task,UserProfile
 from django.contrib import messages
+from random import choice
+from string import ascii_lowercase, digits
 
 def user_login(request):
 
@@ -262,14 +264,29 @@ def userDeleteAccount(request):
     to_delete.delete()
     return redirect(reverse('login'))
 
+def generate_random_username(length=12, chars=ascii_lowercase+digits, split=3, delimiter='-'):
+
+    username = ''.join([choice(chars) for i in xrange(length)])
+
+    if split:
+        username = delimiter.join([username[start:start+split] for start in range(0, len(username), split)])
+
+    try:
+        User.objects.get(username=username)
+        return generate_random_username(length=length, chars=chars, split=split, delimiter=delimiter)
+    except User.DoesNotExist:
+        return username;
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationCustomForm(request.POST)
         if form.is_valid():
             form.save()
+            user = User.objects.get(username=form.cleaned_data['username'])
+            login(request, user,backend='django.contrib.auth.backends.ModelBackend')
             return redirect(reverse('login'))
     else:
-        form = UserCreationCustomForm()
+        form = UserCreationCustomForm(initial={'username': generate_random_username()})
     return render(request, 'taskdesk/registration.html', {'form': form})
 
 def redirectToLogin(request):
