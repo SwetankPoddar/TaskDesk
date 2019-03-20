@@ -100,13 +100,17 @@ footer {
   float:right;
   text-align: right;
 }
-
 .accountDeleteLink {
   color:red;
   border:1px solid red;
   padding:10px;
 }
 
+.accountDeleteLink:hover {
+  color:red;
+  border:1px solid red;
+  padding:20px;
+}
 
 .task-container > .title >.delete{
   float:left;

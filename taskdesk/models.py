@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 
 
 #MAKE email ID unqiue field as users will be logging in via social media accounts.
-
 User._meta.get_field('email')._unique = True
 
 class UserProfile(models.Model):

@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from models import Category, UserProfile, Task
 from datetime import datetime
 from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm,UserCreationForm
+from random import choice
+from string import ascii_lowercase, digits
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -91,14 +93,27 @@ class PasswordChangeCustomForm(PasswordChangeForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
+def generate_random_username(length=12, chars=ascii_lowercase+digits, split=3, delimiter='-'):
+
+    username = ''.join([choice(chars) for i in xrange(length)])
+
+    if split:
+        username = delimiter.join([username[start:start+split] for start in range(0, len(username), split)])
+
+    try:
+        User.objects.get(username=username)
+        return generate_random_username(length=length, chars=chars, split=split, delimiter=delimiter)
+    except User.DoesNotExist:
+        return username;
+
 class UserCreationCustomForm(UserCreationForm):
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField(max_length=60, help_text='Required. Inform a valid email address.')
-
+    username = forms.CharField(max_length=16,widget=forms.HiddenInput(),initial=generate_random_username())
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','password1','password2')
+        fields = ('username','first_name','last_name','email','password1','password2')
 
     def __init__(self, *args, **kwargs):
         super(UserCreationCustomForm, self).__init__(*args, **kwargs)

@@ -27,7 +27,7 @@ def user_login(request):
 
         if user:
             if user.is_active:
-                login(request,user)
+                login(request,user,backend='django.contrib.auth.backends.ModelBackend')
                 return HttpResponseRedirect(reverse('view_tasks'))
             else:
                 return render(request,'taskdesk/login.html',{'error': "Your TaskDesk account is disabled"})
@@ -83,12 +83,14 @@ def view_tasks(request, category_id=''):
         twoDaysInfuture = (datetime.now() + timedelta(days=2))
         twoDaysInPast = (datetime.now() + timedelta(days=-2))
         tomorrow = (datetime.now() + timedelta(days=1))
+
+
         Task.objects.create(user = request.user, category = c,task_name='Task Example 1',
         task_description="Task Description example 1",due_date=tomorrow,
         personal_due_date=twoDaysInPast,priority_level=3)
         Task.objects.create(user = request.user,
          category = c2,task_name='Task Example 2',
-         due_date =twoDaysInfuture,personal_due_date=datetime.now(),priority_level=1)
+         due_date =twoDaysInfuture,personal_due_date=tomorrow,priority_level=1)
 
 
     if request.GET.get('cateogory'):
@@ -263,11 +265,7 @@ def register(request):
         form = UserCreationCustomForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
+            return redirect(reverse('login'))
     else:
         form = UserCreationCustomForm()
     return render(request, 'taskdesk/registration.html', {'form': form})

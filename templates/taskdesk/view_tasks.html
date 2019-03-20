@@ -4,7 +4,7 @@
 Tasks
 {% endblock %}
 {% block body_block %}
-<div class="motivational-quote">Hello,{{user.url_image}} <span class='username'>{{ user.first_name }} {{ user.last_name }}</span>. Dream it, Plan it, Achieve it!</div>
+<div class="motivational-quote">Hello, <span class='username'>{{ user.first_name|title  }} {{ user.last_name|title  }}</span>. Dream it, Plan it, Achieve it!</div>
 {% if categorySet %}<div class='text-center'><br>{% if category %} {{ category.category_name }} {% else %}<div class="alert alert-warning"> Invalid/Empty Category </div>{% endif %} </div> {% endif %}
   {% if tasks %}
     {% for task in tasks %}
