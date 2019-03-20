@@ -3,6 +3,7 @@ from taskdesk import views
 
 
 urlpatterns = [
+	url(r'^$', views.redirectToLogin),
 	url(r'^about-us/$', views.about_us, name='about_us'),
 	url(r'^faq/$', views.faq, name='faq'),
 	url(r'^login/$', views.user_login, name='login'),

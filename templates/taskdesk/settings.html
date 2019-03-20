@@ -31,11 +31,14 @@ Settings
   {% if accountSettings  %}
     <a href="{% url 'userChangePassword' %}"> Change Password </a>
     <br><br>
-    <a class="accountDeleteLink" href="{% url 'userDeleteAccount' %}"> DELETE YOUR ACCOUNT </a>
   {% endif %}
   <div class="text-center">
     <input type="submit" class="btn btn-success" name="submit" value="Update" />
   </div>
+    <div class="text-center accountDeleteLink">
+     <a class="btn btn-outline-danger" href="{% url 'userDeleteAccount' %}"> DELETE YOUR ACCOUNT </a>
+  </div>
+
 </form>
 
 {% endblock %}
