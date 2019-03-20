@@ -4,6 +4,7 @@ from taskdesk import views
 
 urlpatterns = [
 	url(r'^about-us/$', views.about_us, name='about_us'),
+	url(r'^faq/$', views.faq, name='faq'),
 	url(r'^login/$', views.user_login, name='login'),
 	url(r'^register/$', views.register, name='register'),
 	url(r'^logout/$', views.user_logout, name='user_logout'),

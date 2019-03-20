@@ -38,6 +38,8 @@ def user_login(request):
 
 def about_us(request):
     return render (request, 'taskdesk/about-us.html')
+def faq(request):
+    return render (request, 'taskdesk/faq.html')
 
 def differenceInDaysFromToday(date):
     return int((date - datetime.today().date()).days)
