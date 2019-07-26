@@ -10,7 +10,7 @@
 <li>(optional) to allow users to login via social media (facebook/google) you need to obtain the keys from respective wesbites and place them in <a href="http://settings.py">settings.py</a> inside WAD_PROJECT folder.</li>
 </ol>
 <p>Enjoy!</p>
-<p>Members:<br>
-Gaia Argiolas<br>
-Swetank Poddar</p>
+<p>Members (contributions):<br>
+Gaia Argiolas (designed the product)<br>
+Swetank Poddar (designed and developed the product)</p>
 
